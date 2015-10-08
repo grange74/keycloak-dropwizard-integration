@@ -1,2 +1,10 @@
 /**/target
 /keycloak-server
+
+# Exclude Eclipse specific files
+/**/build
+keycloak-dropwizard-jaxrs/.classpath
+keycloak-dropwizard-jaxrs/.project
+keycloak-dropwizard-jaxrs/.settings/
+
+/**/.gradle

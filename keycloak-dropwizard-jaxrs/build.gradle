@@ -1,0 +1,43 @@
+apply plugin: 'java'
+
+// Use Java 8 by default
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+// UTF-8 should be standard by now. So use it!
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// Jar/artifact version
+version = '1.0'
+  
+// Set our project variables
+project.ext {
+	dropwizardVersion = '0.8.4'
+	keycloakVersion = '1.5.0-Final'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile (
+	   'io.dropwizard:dropwizard-core:' + dropwizardVersion,
+	   'io.dropwizard:dropwizard-auth:' + dropwizardVersion,
+	   'org.keycloak:keycloak-jetty92-adapter:' + keycloakVersion,
+	   'org.keycloak:keycloak-jaxrs-oauth-client:' + keycloakVersion
+	)
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.4'
+}
+
+// Create the executable jar and exclude some certificates
+jar {
+ 
+	manifest {
+		attributes "Implementation-Title": "Dropwizard Keycloak"
+		attributes "Implementation-Version": version
+	}
+}
