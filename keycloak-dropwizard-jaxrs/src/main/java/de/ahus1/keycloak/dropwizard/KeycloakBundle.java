@@ -9,7 +9,6 @@ import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.keycloak.adapters.jetty.KeycloakJettyAuthenticator;
 import org.keycloak.enums.TokenStore;
-import org.keycloak.representations.adapters.config.AdapterConfig;
 
 import java.util.Locale;
 
@@ -63,7 +62,7 @@ public abstract class KeycloakBundle<T> implements ConfiguredBundle<T> {
         return "dropwizard";
     };
 
-    protected abstract AdapterConfig getKeycloakConfiguration(T configuration);
+    protected abstract KeycloakConfiguration getKeycloakConfiguration(T configuration);
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {

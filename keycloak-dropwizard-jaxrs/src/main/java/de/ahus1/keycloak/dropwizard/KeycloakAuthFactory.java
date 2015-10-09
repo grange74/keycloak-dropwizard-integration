@@ -9,7 +9,6 @@ import org.keycloak.adapters.*;
 import org.keycloak.adapters.jetty.core.JettyCookieTokenStore;
 import org.keycloak.adapters.jetty.core.JettyRequestAuthenticator;
 import org.keycloak.enums.TokenStore;
-import org.keycloak.representations.adapters.config.AdapterConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +19,7 @@ import javax.ws.rs.core.Context;
 
 public class KeycloakAuthFactory<T> extends AuthFactory<HttpServletRequest, T> {
 
-    private AdapterConfig adapterConfig;
+    private KeycloakConfiguration keycloakConfig;
 
     private Authenticator<HttpServletRequest, T> authenticator;
 
@@ -43,10 +42,10 @@ public class KeycloakAuthFactory<T> extends AuthFactory<HttpServletRequest, T> {
     @Context
     private HttpServletRequest request;
 
-    public KeycloakAuthFactory(AdapterConfig config, String realm, Authenticator<HttpServletRequest, T> authenticator, Class<T> generatedClass) {
+    public KeycloakAuthFactory(KeycloakConfiguration config, String realm, Authenticator<HttpServletRequest, T> authenticator, Class<T> generatedClass) {
         super(authenticator);
         this.authenticator = authenticator;
-        this.adapterConfig = config;
+        this.keycloakConfig = config;
         this.realm = realm;
         this.generatedClass = generatedClass;
         initializeKeycloak();
@@ -60,7 +59,7 @@ public class KeycloakAuthFactory<T> extends AuthFactory<HttpServletRequest, T> {
     @Override
     public AuthFactory<HttpServletRequest, T> clone(boolean required) {
         this.required = required;
-        return new KeycloakAuthFactory(adapterConfig, realm, authenticator, generatedClass);
+        return new KeycloakAuthFactory(keycloakConfig, realm, authenticator, generatedClass);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class KeycloakAuthFactory<T> extends AuthFactory<HttpServletRequest, T> {
     }
 
     public void initializeKeycloak() {
-        KeycloakDeployment kd = KeycloakDeploymentBuilder.build(adapterConfig);
+        KeycloakDeployment kd = KeycloakDeploymentBuilder.build(keycloakConfig);
         deploymentContext = new AdapterDeploymentContext(kd);
     }
 
